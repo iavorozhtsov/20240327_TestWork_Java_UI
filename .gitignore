@@ -1,2 +1,3 @@
-/src/main/resources/chromedriver.exe
-/target/
+src/main/resources/chromedriver.exe
+target/
+.idea/
