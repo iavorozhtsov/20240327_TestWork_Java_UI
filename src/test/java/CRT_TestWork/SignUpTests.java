@@ -6,88 +6,103 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class SignUpTests extends AbstractTest{
 
+    @BeforeAll
+    public static void init(){
+        SignUpPage sp = new SignUpPage(getWebDriver());
+    }
+
     @BeforeEach
     private void signUpPageOpen(){
-        getWebDriver().get(SignUpUrl);
+        getWebDriver().get(getSignUpUrl());
     }
 
     @Test
     @DisplayName("Т-SignUp-00 There is all required elements on page Sign In")
-    void checkRequiredElements(){
+    protected void checkRequiredElements(){
         SignUpPage sp = new SignUpPage(getWebDriver());
 
-        Assertions.assertTrue(sp.emailIsAvailable());
-        Assertions.assertTrue(sp.nameIsAvailable());
-        Assertions.assertTrue(sp.passwordIsAvailable());
-        Assertions.assertTrue(sp.signUpIsAvailable());
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(sp.emailIsAvailable()),
+                () -> Assertions.assertTrue(sp.nameIsAvailable()),
+                () -> Assertions.assertTrue(sp.passwordIsAvailable()),
+                () -> Assertions.assertTrue(sp.signUpIsAvailable())
+        );
     }
 
     @Test
     @DisplayName("Т-SignUp-01 Registration with valid credentials")
 
-    void firstRegistrationWithValidCredentials(){
-        registerMe(validEmail, validName, validPassword);
+    public void registrationWithValidCredentials(){
+        SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(LoginUrl, getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
     @DisplayName("Т-SignUp-02 Email field is required")
     /* Тест упадёт только в первый запуск, так как зарегистрирует пользователя с пустым полем почты */
-    void emailIsRequired(){
-        registerMe("", validName, validPassword);
+    public void emailIsRequired(){
+        SignUpPage.registerMe("", Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(SignUpUrl, getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
     @DisplayName("Т-SignUp-03 Password field is required")
-    void passwordIsRequired(){
-        registerMe(validEmail + "1", validName, "");
+    public void passwordIsRequired(){
+        SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), "");
 
-        Assertions.assertEquals(SignUpUrl, getWebDriver().getCurrentUrl());
-        Assertions.assertNotEquals(LoginUrl, getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertNotEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
     @DisplayName("Т-SignUp-04 Name field is not required")
-    void nameIsNotRequired(){
-        registerMe(validEmail+2, "", validPassword);
+    public void nameIsNotRequired(){
+        SignUpPage.registerMe(Utils.getValidEmail(), "", Utils.getPassword());
 
-        Assertions.assertEquals(LoginUrl, getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
-    @DisplayName("Т-SignUp-05 Try to register with already existing valid credentials")
-    /* В зависимости от порядка запуска тестов в первом прогоне может упасть,
-    * так как выполнится до позитивного теста  Т-SignUp-01 */
-    void secondRegistrationWithValidCredentials(){
-        registerMe(validEmail, validName, validPassword);
+    @DisplayName("Т-SignUp-05 Try to register with already existing valid email")
+    public void registrationWithExistingValidEmail(){
+        String validEmail = Utils.getValidEmail();
 
         SignUpPage sp = new SignUpPage(getWebDriver());
+        sp.registerMe(validEmail, Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(SignUpUrl, getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
+        getWebDriver().get(getSignUpUrl());
+
+        sp.registerMe(validEmail, Utils.getUserName(), Utils.getPassword());
+
+        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
         Assertions.assertTrue(sp.notificationIsVisible());
-        Assertions.assertEquals(emailExistMessage, sp.notificationGetText());
+        Assertions.assertEquals(getEmailExistMessage(), sp.notificationGetText());
+    }
+
+    @Test
+    @DisplayName("Т-SignUp-06 Try to register with already existing valid password")
+    public void registrationWithExistingValidPassword(){
+        String validPassword = Utils.getPassword();
+
+        SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), validPassword);
+
+        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
+        getWebDriver().get(getSignUpUrl());
+
+        SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), validPassword);
+
+        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @ParameterizedTest
-    @DisplayName("Т-SignUp-06-8 Try to register with invalid email")
-    @ValueSource(strings = {"1", "1@", "@1"})
-    void tryRegisterWithInvalidEmail(String invalidEmail){
-        registerMe(invalidEmail, validName, validPassword);
+    @DisplayName("Т-SignUp-07-9 Try to register with invalid email")
+    @ValueSource(strings = {"@*", "*@", "@@", "*"})
+    public void tryRegisterWithInvalidEmail(String invalidEmail){
+        SignUpPage.registerMe(Utils.getInvalidEmail(invalidEmail), Utils.getUserName(), Utils.getPassword());
 
-        SignUpPage sp = new SignUpPage(getWebDriver());
-
-        Assertions.assertEquals(SignUpUrl, getWebDriver().getCurrentUrl());
-    }
-
-    void registerMe(String email, String name, String password){
-        SignUpPage sp = new SignUpPage(getWebDriver());
-
-        sp.emailSendkeys(email);
-        sp.nameSendkeys(name);
-        sp.passwordSendkeys(password);
-        sp.signUpBtnClick();
+        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
     }
 }

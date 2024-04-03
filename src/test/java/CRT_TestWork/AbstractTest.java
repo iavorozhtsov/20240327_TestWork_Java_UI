@@ -12,34 +12,34 @@ import java.time.Duration;
 import java.util.Calendar;
 
 
-public abstract class AbstractTest
+public class AbstractTest
 {
     private static WebDriver driver;
 
-    final String BaseUrl = "http://localhost:5000/";
-    final String LoginUrl = BaseUrl + "login";
-    final String SignUpUrl = BaseUrl + "signup";
-    final String ProfileUrl = BaseUrl + "profile";
+    private String BaseUrl = "http://localhost:5000/";
 
-    static final String validEmail = new SimpleDateFormat("yyyyMMdd@HHmm").format(Calendar.getInstance().getTime());
-    final String constantUserEmail = "test@test.com";
-    final String unregisteredUserEmail = "unregistered@test.com";
+    private String LoginUrl = BaseUrl + "login";
+    private String SignUpUrl = BaseUrl + "signup";
+    private String ProfileUrl = BaseUrl + "profile";
 
-    final String mainPageTitle = "Flask Auth Example";
-    final String validName = "John Doe";
-    final String validPassword = "$tr0ng_@nd_L0ng";
-    final String emailExistMessage = "Email address already exists. Go to login page.";
-    final String wrongCredentialsMessage = "Please check your login details and try again.";
-    final String welcomeMessage = "Welcome, " + validName + "!";
-    final String logoutButtonText = "Logout";
-    final String profileButtonText = "Profile";
+    private  String mainPageTitle = "Flask Auth Example";
+    private  String emailExistMessage = "Email address already exists. Go to login page.";
+    private  String wrongCredentialsMessage = "Please check your login details and try again.";
+    private  String welcomeMessage = "Welcome, ";
+    private  String logoutButtonText = "Logout";
+    private  String profileButtonText = "Profile";
 
 
     @BeforeAll
-    static void init() {
+    public static void init() {
 
         driver = getWebDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+    }
+
+    @AfterAll
+    public static void tearDown(){
+        if (driver == null) driver.quit();
     }
 
     public static WebDriver getWebDriver(){
@@ -53,8 +53,43 @@ public abstract class AbstractTest
         return driver;
     }
 
-    @AfterAll
-    static void tearDown(){
-        if (driver == null) driver.quit();
+    public String getBaseUrl() {
+        return BaseUrl;
+    }
+
+    public String getLoginUrl() {
+        return LoginUrl;
+    }
+
+    public String getSignUpUrl() {
+        return SignUpUrl;
+    }
+
+    public String getProfileUrl() {
+        return ProfileUrl;
+    }
+
+    public String getMainPageTitle() {
+        return mainPageTitle;
+    }
+
+    public String getEmailExistMessage() {
+        return emailExistMessage;
+    }
+
+    public String getWrongCredentialsMessage() {
+        return wrongCredentialsMessage;
+    }
+
+    public String getWelcomeMessage() {
+        return welcomeMessage;
+    }
+
+    public String getLogoutButtonText() {
+        return logoutButtonText;
+    }
+
+    public String getProfileButtonText() {
+        return profileButtonText;
     }
 }

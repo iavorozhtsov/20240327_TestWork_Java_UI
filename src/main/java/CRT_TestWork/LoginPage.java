@@ -30,4 +30,10 @@ public class LoginPage extends SignUpPage{
     public void loginClick(){
         loginBtn.click();
     }
+
+    public void logMeIn(String email, String password) {
+        this.email.sendKeys(email);
+        this.password.sendKeys(password);
+        loginBtn.click();
+    }
 }

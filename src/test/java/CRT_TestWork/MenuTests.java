@@ -9,41 +9,45 @@ public class MenuTests extends AbstractTest{
 
     @BeforeEach
     public void openMainPage(){
-        getWebDriver().get(BaseUrl);
+        getWebDriver().get(getBaseUrl());
     }
 
     @Test
     @DisplayName("Т-Main-00 Site is available")
-    void mainPageOpen(){
-        Assertions.assertEquals(BaseUrl, getWebDriver().getCurrentUrl());
-        Assertions.assertEquals(mainPageTitle,getWebDriver().getTitle());
+    protected void mainPageOpen(){
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(getBaseUrl(), getWebDriver().getCurrentUrl()),
+                () -> Assertions.assertEquals(getMainPageTitle(),getWebDriver().getTitle())
+        );
     }
 
     @Test
     @DisplayName("Т-Main-01 Menu items are available on main page")
-    void mainPageMenuItems(){
+    protected void mainPageMenuItems(){
         MainPage mp = new MainPage(getWebDriver());
 
-        Assertions.assertTrue(mp.menuHomeAvailable());
-        Assertions.assertTrue(mp.menuLoginAvailable());
-        Assertions.assertTrue(mp.menuSignUpAvailable());
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(mp.menuHomeAvailable()),
+                () -> Assertions.assertTrue(mp.menuLoginAvailable()),
+                () -> Assertions.assertTrue(mp.menuSignUpAvailable())
+        );
     }
 
     @Test
     @DisplayName("Т-Main-02 Login button will open Login page")
-    void menuItemLoginWillOpenLogin(){
+    protected void menuItemLoginWillOpenLogin(){
         MainPage mp = new MainPage(getWebDriver());
-
         mp.menuLoginClick();
-        Assertions.assertEquals(LoginUrl, getWebDriver().getCurrentUrl());
+
+        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
     @DisplayName("Т-Main-03 SignUp button will open Sign Up page")
-    void menuItemSignUpWillOpenSignUp(){
+    protected void menuItemSignUpWillOpenSignUp(){
         MainPage mp = new MainPage(getWebDriver());
-
         mp.menuSignUpClick();
-        Assertions.assertEquals(SignUpUrl, getWebDriver().getCurrentUrl());
+
+        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
     }
 }

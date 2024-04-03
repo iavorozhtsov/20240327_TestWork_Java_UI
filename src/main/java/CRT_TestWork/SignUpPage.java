@@ -7,16 +7,16 @@ import org.openqa.selenium.support.FindBy;
 public class SignUpPage extends AbstractPage {
 
     @FindBy(name = "email")
-    private WebElement email;
+    private static WebElement email;
 
     @FindBy(name = "name")
-    private WebElement name;
+    private static WebElement name;
 
     @FindBy(name = "password")
-    private WebElement password;
+    private static WebElement password;
 
     @FindBy(className = "button")
-    private WebElement signUpBtn;
+    private static WebElement signUpBtn;
 
     @FindBy(className = "notification")
     private WebElement notification;
@@ -29,34 +29,16 @@ public class SignUpPage extends AbstractPage {
         return email.isEnabled();
     }
 
-    public void emailSendkeys (String s){
-        email.click();
-        email.sendKeys(s);
-    }
-
     public boolean nameIsAvailable(){
         return name.isEnabled();
-    }
-
-    public void nameSendkeys(String s){
-        name.click();
-        name.sendKeys(s);
     }
 
     public boolean passwordIsAvailable(){
         return password.isEnabled();
     }
 
-    public void passwordSendkeys(String s){
-        password.click();
-        password.sendKeys(s);
-    }
-
     public boolean signUpIsAvailable(){
         return signUpBtn.isEnabled();
-    }
-    public void signUpBtnClick(){
-        signUpBtn.click();
     }
 
     public boolean notificationIsVisible(){
@@ -65,5 +47,15 @@ public class SignUpPage extends AbstractPage {
 
     public String notificationGetText(){
         return notification.getText();
+    }
+
+    public static void registerMe(String _email, String _name, String _password){
+        email.click();
+        email.sendKeys(_email);
+        name.click();
+        name.sendKeys(_name);
+        password.click();
+        password.sendKeys(_password);
+        signUpBtn.click();
     }
 }

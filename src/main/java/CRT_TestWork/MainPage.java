@@ -15,6 +15,9 @@ public class MainPage extends AbstractPage {
     @FindBy(xpath = "//*[@id=\"navbarMenuHeroA\"]/div/a[3]")
     private WebElement menuSignUpBtn;
 
+    @FindBy(className = "title")
+    private WebElement title;
+
     public MainPage(WebDriver driver) {
         super(driver);
     }
