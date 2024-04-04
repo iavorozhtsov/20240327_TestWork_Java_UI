@@ -1,14 +1,12 @@
 package CRT_TestWork;
 
+import CRT_TestWork.Utils.SignUpException;
+import CRT_TestWork.Utils.Utils;
 import org.junit.jupiter.api.*;
 
+import static CRT_TestWork.Utils.Utils.*;
+
 public class LoginTests extends AbstractTest{
-
-    private static String userEmail = "";
-    private static String userPassword = "";
-    private static String userName = "";
-    private static String otherUserPassword = "";
-
 
     @BeforeEach
     protected void loginPageOpen(){
@@ -36,11 +34,11 @@ public class LoginTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-Login-01 Registered user can log in with valid credentials")
-    protected void loginWithValidCredentials(){
-        getRegisteredUserCredentials();
+    protected void loginWithValidCredentials() throws SignUpException {
+        getRegisteredUserCredentials(getWebDriver());
 
         LoginPage lp = new LoginPage(getWebDriver());
-        lp.logMeIn(userEmail, userPassword);
+        lp.logMeIn(getUserEmail(), getUserPassword());
 
         ProfilePage pp = new ProfilePage(getWebDriver());
 
@@ -48,7 +46,7 @@ public class LoginTests extends AbstractTest{
                 () -> Assertions.assertTrue(pp.menuProfileBtnIsAvailable()),
                 () -> Assertions.assertTrue(pp.menuLogoutBtnIsAvailable()),
                 () -> Assertions.assertEquals(getProfileUrl(), getWebDriver().getCurrentUrl()),
-                () -> Assertions.assertEquals(getWelcomeMessage() + userName + "!", pp.titleGetMessage()),
+                () -> Assertions.assertEquals(getWelcomeMessage() + getUserName() + "!", pp.titleGetMessage()),
                 () -> Assertions.assertEquals(getProfileButtonText(), pp.menuProfileBtnGetText()),
                 () -> Assertions.assertEquals(getLogoutButtonText(), pp.menuLogoutBtnGetText())
         );
@@ -56,12 +54,12 @@ public class LoginTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-Login-02 Registered user can not log in with invalid password")
-    protected void loginWithInvalidPassword(){
+    protected void loginWithInvalidPassword() throws SignUpException {
         SignUpPage sp = new SignUpPage(getWebDriver());
-        getRegisteredUserCredentials();
+        getRegisteredUserCredentials(getWebDriver());
 
         LoginPage lp = new LoginPage(getWebDriver());
-        lp.logMeIn(userEmail, Utils.getPassword());
+        lp.logMeIn(getUserEmail(), Utils.getPassword());
 
         Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
         Assertions.assertEquals(getWrongCredentialsMessage(), lp.notificationGetText());
@@ -69,11 +67,15 @@ public class LoginTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-Login-03 Registered user can not log in with other user's valid password ")
-    protected void loginWithOtherUserPassword(){
-        getRegisteredUserCredentials();
+    protected void loginWithOtherUserPassword() throws SignUpException {
+        getRegisteredUserCredentials(getWebDriver());
+        String otherUserPassword = getUserPassword();
+        clearUserCredentials();
+        getRegisteredUserCredentials(getWebDriver());
+
 
         LoginPage lp = new LoginPage(getWebDriver());
-        lp.logMeIn(userEmail, otherUserPassword);
+        lp.logMeIn(getUserEmail(), otherUserPassword);
 
         Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
         Assertions.assertEquals(getWrongCredentialsMessage(), lp.notificationGetText());
@@ -83,7 +85,7 @@ public class LoginTests extends AbstractTest{
     @DisplayName("Т-Login-04 Unregistered user can not log in")
     protected void loginWithUnregisteredUser(){
         LoginPage lp = new LoginPage(getWebDriver());
-        lp.logMeIn(Utils.getValidEmail(), Utils.getPassword());
+        lp.logMeIn(Utils.getValidEmail(), getPassword());
 
         Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
         Assertions.assertEquals(getWrongCredentialsMessage(), lp.notificationGetText());
@@ -91,30 +93,13 @@ public class LoginTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-Login-05 Unregistered user can not log in with registered user password")
-    protected void loginWithUnregisteredUserAndOtherUserPassword(){
-        getRegisteredUserCredentials();
+    protected void loginWithUnregisteredUserAndOtherUserPassword() throws SignUpException {
+        getRegisteredUserCredentials(getWebDriver());
 
         LoginPage lp = new LoginPage(getWebDriver());
-        lp.logMeIn(Utils.getValidEmail(), userPassword);
+        lp.logMeIn(Utils.getValidEmail(), getUserPassword());
 
         Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
         Assertions.assertEquals(getWrongCredentialsMessage(), lp.notificationGetText());
-    }
-
-    private void getRegisteredUserCredentials(){
-        if (userEmail.isEmpty()){
-            userEmail = Utils.getValidEmail();
-            userName = Utils.getUserName();
-            userPassword = Utils.getPassword();
-            otherUserPassword = Utils.getPassword();
-
-            getWebDriver().get(getSignUpUrl());
-            SignUpPage.registerMe(userEmail, userName, userPassword);
-            Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
-
-            getWebDriver().get(getSignUpUrl());
-            SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), otherUserPassword);
-            Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
-        }
     }
 }

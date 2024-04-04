@@ -13,21 +13,6 @@ public class AbstractTest
 {
     private static WebDriver driver;
 
-    private String BaseUrl = "http://localhost:5000/";
-
-    private String LoginUrl = BaseUrl + "login";
-    private String SignUpUrl = BaseUrl + "signup";
-    private String ProfileUrl = BaseUrl + "profile";
-
-    private String mainPageTitle = "Flask Auth Example";
-    private String emailExistMessage = "Email address already exists. Go to login page.";
-    private String wrongCredentialsMessage = "Please check your login details and try again.";
-    private String nonAuthorized = "Please log in to access this page.";
-    private String welcomeMessage = "Welcome, ";
-    private String logoutButtonText = "Logout";
-    private String profileButtonText = "Profile";
-
-
     @BeforeAll
     public static void init() {
 
@@ -49,49 +34,5 @@ public class AbstractTest
         }
 
         return driver;
-    }
-
-    public String getBaseUrl() {
-        return BaseUrl;
-    }
-
-    public String getLoginUrl() {
-        return LoginUrl;
-    }
-
-    public String getSignUpUrl() {
-        return SignUpUrl;
-    }
-
-    public String getProfileUrl() {
-        return ProfileUrl;
-    }
-
-    public String getMainPageTitle() {
-        return mainPageTitle;
-    }
-
-    public String getEmailExistMessage() {
-        return emailExistMessage;
-    }
-
-    public String getWrongCredentialsMessage() {
-        return wrongCredentialsMessage;
-    }
-
-    public String getNonAuthorized() {
-        return nonAuthorized;
-    }
-
-    public String getWelcomeMessage() {
-        return welcomeMessage;
-    }
-
-    public String getLogoutButtonText() {
-        return logoutButtonText;
-    }
-
-    public String getProfileButtonText() {
-        return profileButtonText;
     }
 }

@@ -7,16 +7,16 @@ import org.openqa.selenium.support.FindBy;
 public class LoginPage extends SignUpPage{
 
     @FindBy(name = "email")
-    private WebElement email;
+    private static WebElement email;
 
     @FindBy(name = "password")
-    private WebElement password;
+    private static WebElement password;
 
     @FindBy(className = "button")
-    private WebElement loginBtn;
+    private static WebElement loginBtn;
 
     @FindBy(className = "notification")
-    private WebElement notification;
+    private static WebElement notification;
 
 
     public LoginPage(WebDriver driver) {
@@ -31,9 +31,13 @@ public class LoginPage extends SignUpPage{
         loginBtn.click();
     }
 
-    public void logMeIn(String email, String password) {
-        this.email.sendKeys(email);
-        this.password.sendKeys(password);
+    public static String getNotification() {
+        return notification.getText();
+    }
+
+    public static void logMeIn(String _email, String _password) {
+        email.sendKeys(_email);
+        password.sendKeys(_password);
         loginBtn.click();
     }
 }

@@ -1,5 +1,6 @@
 package CRT_TestWork;
 
+import CRT_TestWork.Utils.Utils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -13,7 +14,7 @@ public class SignUpTests extends AbstractTest{
 
     @BeforeEach
     private void signUpPageOpen(){
-        getWebDriver().get(getSignUpUrl());
+        getWebDriver().get(Utils.getSignUpUrl());
     }
 
     @Test
@@ -34,7 +35,7 @@ public class SignUpTests extends AbstractTest{
     protected void registrationWithValidCredentials(){
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
@@ -43,7 +44,7 @@ public class SignUpTests extends AbstractTest{
     protected void emailIsRequired(){
         SignUpPage.registerMe("", Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(Utils.getSignUpUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
@@ -51,8 +52,8 @@ public class SignUpTests extends AbstractTest{
     protected void passwordIsRequired(){
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), "");
 
-        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
-        Assertions.assertNotEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(Utils.getSignUpUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertNotEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
@@ -60,7 +61,7 @@ public class SignUpTests extends AbstractTest{
     protected void nameIsNotRequired(){
         SignUpPage.registerMe(Utils.getValidEmail(), "", Utils.getPassword());
 
-        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @Test
@@ -71,14 +72,16 @@ public class SignUpTests extends AbstractTest{
         SignUpPage sp = new SignUpPage(getWebDriver());
         sp.registerMe(validEmail, Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
-        getWebDriver().get(getSignUpUrl());
+        Assertions.assertEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
+        getWebDriver().get(Utils.getSignUpUrl());
 
         sp.registerMe(validEmail, Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
-        Assertions.assertTrue(sp.notificationIsVisible());
-        Assertions.assertEquals(getEmailExistMessage(), sp.notificationGetText());
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(Utils.getSignUpUrl(), getWebDriver().getCurrentUrl()),
+                () -> Assertions.assertTrue(sp.notificationIsVisible()),
+                () -> Assertions.assertEquals(Utils.getEmailExistMessage(), sp.notificationGetText())
+        );
     }
 
     @Test
@@ -88,12 +91,12 @@ public class SignUpTests extends AbstractTest{
 
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), validPassword);
 
-        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
-        getWebDriver().get(getSignUpUrl());
+        Assertions.assertEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
+        getWebDriver().get(Utils.getSignUpUrl());
 
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), validPassword);
 
-        Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
     }
 
     @ParameterizedTest
@@ -102,6 +105,6 @@ public class SignUpTests extends AbstractTest{
     protected void tryRegisterWithInvalidEmail(String invalidEmail){
         SignUpPage.registerMe(Utils.getInvalidEmail(invalidEmail), Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertEquals(Utils.getSignUpUrl(), getWebDriver().getCurrentUrl());
     }
 }

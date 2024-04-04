@@ -47,5 +47,4 @@ public class ProfilePage extends AbstractPage {
         return title.getText();
     }
 
-
 }
