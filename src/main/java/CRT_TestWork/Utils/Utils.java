@@ -12,8 +12,7 @@ public class Utils {
     private static String AvailableSymbols =
                     "QWERTYUIOPASDFGHJKLZXCVBNM" +
                     "qwertyuiopasdfghjklzxcvbnm" +
-                    "1234567890" +
-                    "_.";
+                    "1234567890";
     private static String PasswordChars = "!@#$%^&*()_=,./|\\';:";
     private static Random random = new Random();
 
@@ -37,7 +36,7 @@ public class Utils {
 
     public static String getValidEmail(){
 
-        return generateString(AvailableSymbols, MaxLen) + "@" + generateString(AvailableSymbols, MaxLen).replace('_', 'a');
+        return generateString(AvailableSymbols, MaxLen) + "@" + generateString(AvailableSymbols, MaxLen) + "." + generateString(AvailableSymbols,MinLen + 2);
     }
 
     public static String getInvalidEmail(String type){
@@ -75,8 +74,6 @@ public class Utils {
         for (int i = 0; i <= MinLen + random.nextInt(length - MinLen); i++) {
             newString.append(symbols.charAt(random.nextInt(symbols.length())));
         }
-        if ((newString.charAt(0) == '.') || (newString.charAt(newString.length()-1) == '.'))
-            newString.toString().replace('.', 'c');
 
         return newString.toString();
     }
