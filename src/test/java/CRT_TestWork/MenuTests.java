@@ -50,4 +50,12 @@ public class MenuTests extends AbstractTest{
 
         Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
     }
+
+    //ToDo: Home button returns user to main page regardless of current section
+
+    //ToDo: Authorized user will see menu with Profile and Logout buttons
+
+    //ToDo: Logout button will log out user and open main page
+
+    //ToDo: Logged out user is not able to open Profile page
 }

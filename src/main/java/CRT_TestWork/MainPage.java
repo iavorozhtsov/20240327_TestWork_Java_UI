@@ -23,7 +23,7 @@ public class MainPage extends AbstractPage {
     }
 
     public void menuHomeClick(){
-        menuHomeBtn.click();;
+        menuHomeBtn.click();
     }
 
     public boolean menuHomeAvailable(){
@@ -31,7 +31,7 @@ public class MainPage extends AbstractPage {
     }
 
     public void menuLoginClick(){
-        menuLoginBtn.click();;
+        menuLoginBtn.click();
     }
 
     public boolean menuLoginAvailable(){
@@ -39,7 +39,7 @@ public class MainPage extends AbstractPage {
     }
 
     public void menuSignUpClick(){
-        menuSignUpBtn.click();;
+        menuSignUpBtn.click();
     }
 
     public boolean menuSignUpAvailable(){

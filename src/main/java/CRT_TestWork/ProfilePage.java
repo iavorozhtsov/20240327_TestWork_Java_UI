@@ -43,10 +43,6 @@ public class ProfilePage extends AbstractPage {
         menuLogoutBtn.click();
     }
 
-    public boolean titleIsAvailable(){
-        return title.isDisplayed();
-    }
-
     public String titleGetMessage(){
         return title.getText();
     }

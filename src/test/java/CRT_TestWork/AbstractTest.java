@@ -6,10 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Calendar;
 
 
 public class AbstractTest
@@ -22,12 +19,13 @@ public class AbstractTest
     private String SignUpUrl = BaseUrl + "signup";
     private String ProfileUrl = BaseUrl + "profile";
 
-    private  String mainPageTitle = "Flask Auth Example";
-    private  String emailExistMessage = "Email address already exists. Go to login page.";
-    private  String wrongCredentialsMessage = "Please check your login details and try again.";
-    private  String welcomeMessage = "Welcome, ";
-    private  String logoutButtonText = "Logout";
-    private  String profileButtonText = "Profile";
+    private String mainPageTitle = "Flask Auth Example";
+    private String emailExistMessage = "Email address already exists. Go to login page.";
+    private String wrongCredentialsMessage = "Please check your login details and try again.";
+    private String nonAuthorized = "Please log in to access this page.";
+    private String welcomeMessage = "Welcome, ";
+    private String logoutButtonText = "Logout";
+    private String profileButtonText = "Profile";
 
 
     @BeforeAll
@@ -79,6 +77,10 @@ public class AbstractTest
 
     public String getWrongCredentialsMessage() {
         return wrongCredentialsMessage;
+    }
+
+    public String getNonAuthorized() {
+        return nonAuthorized;
     }
 
     public String getWelcomeMessage() {

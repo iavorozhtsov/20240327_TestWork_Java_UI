@@ -31,8 +31,7 @@ public class SignUpTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-SignUp-01 Registration with valid credentials")
-
-    public void registrationWithValidCredentials(){
+    protected void registrationWithValidCredentials(){
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), Utils.getPassword());
 
         Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
@@ -41,7 +40,7 @@ public class SignUpTests extends AbstractTest{
     @Test
     @DisplayName("Т-SignUp-02 Email field is required")
     /* Тест упадёт только в первый запуск, так как зарегистрирует пользователя с пустым полем почты */
-    public void emailIsRequired(){
+    protected void emailIsRequired(){
         SignUpPage.registerMe("", Utils.getUserName(), Utils.getPassword());
 
         Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
@@ -49,7 +48,7 @@ public class SignUpTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-SignUp-03 Password field is required")
-    public void passwordIsRequired(){
+    protected void passwordIsRequired(){
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), "");
 
         Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());
@@ -58,7 +57,7 @@ public class SignUpTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-SignUp-04 Name field is not required")
-    public void nameIsNotRequired(){
+    protected void nameIsNotRequired(){
         SignUpPage.registerMe(Utils.getValidEmail(), "", Utils.getPassword());
 
         Assertions.assertEquals(getLoginUrl(), getWebDriver().getCurrentUrl());
@@ -66,7 +65,7 @@ public class SignUpTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-SignUp-05 Try to register with already existing valid email")
-    public void registrationWithExistingValidEmail(){
+    protected void registrationWithExistingValidEmail(){
         String validEmail = Utils.getValidEmail();
 
         SignUpPage sp = new SignUpPage(getWebDriver());
@@ -84,7 +83,7 @@ public class SignUpTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-SignUp-06 Try to register with already existing valid password")
-    public void registrationWithExistingValidPassword(){
+    protected void registrationWithExistingValidPassword(){
         String validPassword = Utils.getPassword();
 
         SignUpPage.registerMe(Utils.getValidEmail(), Utils.getUserName(), validPassword);
@@ -100,7 +99,7 @@ public class SignUpTests extends AbstractTest{
     @ParameterizedTest
     @DisplayName("Т-SignUp-07-9 Try to register with invalid email")
     @ValueSource(strings = {"@*", "*@", "@@", "*"})
-    public void tryRegisterWithInvalidEmail(String invalidEmail){
+    protected void tryRegisterWithInvalidEmail(String invalidEmail){
         SignUpPage.registerMe(Utils.getInvalidEmail(invalidEmail), Utils.getUserName(), Utils.getPassword());
 
         Assertions.assertEquals(getSignUpUrl(), getWebDriver().getCurrentUrl());

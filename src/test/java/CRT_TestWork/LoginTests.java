@@ -4,10 +4,10 @@ import org.junit.jupiter.api.*;
 
 public class LoginTests extends AbstractTest{
 
-    static String userEmail = "";
-    static String userPassword = "";
-    static String userName = "";
-    static String otherUserPassword = "";
+    private static String userEmail = "";
+    private static String userPassword = "";
+    private static String userName = "";
+    private static String otherUserPassword = "";
 
 
     @BeforeEach
