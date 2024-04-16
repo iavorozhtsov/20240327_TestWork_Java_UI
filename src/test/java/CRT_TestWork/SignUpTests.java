@@ -40,11 +40,12 @@ public class SignUpTests extends AbstractTest{
 
     @Test
     @DisplayName("Т-SignUp-02 Email field is required")
-    /* Тест упадёт только в первый запуск, так как зарегистрирует пользователя с пустым полем почты */
     protected void emailIsRequired(){
-        SignUpPage.registerMe("", Utils.getUserName(), Utils.getPassword());
+        SignUpPage sp = new SignUpPage(getWebDriver());
+        sp.registerMe("", Utils.getUserName(), Utils.getPassword());
 
-        Assertions.assertEquals(Utils.getSignUpUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertNotEquals(Utils.getLoginUrl(), getWebDriver().getCurrentUrl());
+        Assertions.assertNotEquals(Utils.getEmailExistMessage(), sp.notificationGetText());
     }
 
     @Test
